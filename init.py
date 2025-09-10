@@ -1,9 +1,9 @@
 """
-Core cryptographic components for AOW implementation.
+Test suite for Affine One-Wayness (AOW) implementation.
 """
 
-from .fields import FiniteField
-from .aiip import iterate_polynomial, AIIPParameters
-from .polynomials import QuadraticPolynomial
+import sys
+import os
 
-__all__ = ['FiniteField', 'iterate_polynomial', 'AIIPParameters', 'QuadraticPolynomial']
+# Add the src directory to the Python path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
