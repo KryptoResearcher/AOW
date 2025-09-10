@@ -1,0 +1,44 @@
+{
+  "events": [
+    {
+      "type": "transaction",
+      "from": "Alice",
+      "to": "Bob",
+      "amount": 10,
+      "currency": "BTC",
+      "timestamp": 1635724800
+    },
+    {
+      "type": "transaction",
+      "from": "Bob",
+      "to": "Charlie",
+      "amount": 5,
+      "currency": "BTC",
+      "timestamp": 1635724860
+    },
+    {
+      "type": "transaction",
+      "from": "Charlie",
+      "to": "Dave",
+      "amount": 3,
+      "currency": "BTC",
+      "timestamp": 1635724920
+    },
+    {
+      "type": "transaction",
+      "from": "Dave",
+      "to": "Eve",
+      "amount": 2,
+      "currency": "BTC",
+      "timestamp": 1635724980
+    },
+    {
+      "type": "transaction",
+      "from": "Eve",
+      "to": "Frank",
+      "amount": 1,
+      "currency": "BTC",
+      "timestamp": 1635725040
+    }
+  ]
+}
