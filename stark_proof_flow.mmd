@@ -1,0 +1,37 @@
+flowchart TD
+    subgraph "STARK Proof Generation"
+        direction TB
+        INPUT[Input x, α, iterations n]
+        TRACE[Generate Execution Trace<br>T[i] = x_i, x_{i+1}]
+        CONSTRAINTS[Define AIR Constraints<br>Transition: x_{i+1} = x_i² + α<br>Boundary: T[0,0]=x, T[n-1,1]=y]
+        COMMIT[Commit to Trace<br>Merkle Tree Construction]
+        FRI[FRI Protocol<br>Low-degree testing]
+        PROOF[Generate STARK Proof]
+    end
+
+    subgraph "STARK Proof Verification"
+        direction TB
+        VINPUT[Receive Proof]
+        VFRI[Verify FRI Layers]
+        VQUERY[Perform Queries]
+        VVERIFY[Verify Constraints]
+        RESULT[Accept/Reject Proof]
+    end
+
+    INPUT --> TRACE
+    TRACE --> CONSTRAINTS
+    CONSTRAINTS --> COMMIT
+    COMMIT --> FRI
+    FRI --> PROOF
+    
+    PROOF --> VINPUT
+    VINPUT --> VFRI
+    VFRI --> VQUERY
+    VQUERY --> VVERIFY
+    VVERIFY --> RESULT
+
+    classDef generation fill:#e8f5e8
+    classDef verification fill:#fff3e0
+    
+    class INPUT,TRACE,CONSTRAINTS,COMMIT,FRI,PROOF generation
+    class VINPUT,VFRI,VQUERY,VVERIFY,RESULT verification

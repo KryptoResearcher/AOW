@@ -1,0 +1,16 @@
+sequenceDiagram
+    participant User
+    participant AOW as AOW Function
+    participant Verifier
+
+    User->>AOW: Input x, iteration count n
+    Note over User,AOW: f(x) = x² + α
+    AOW->>AOW: Compute f^{(n)}(x)
+    AOW-->>User: Result y
+    
+    User->>Verifier: Claim: y = f^{(n)}(x)
+    Verifier->>Verifier: Verify temporal binding
+    Note over Verifier: Checks:<br>1. Sequential evaluation<br>2. Depth uniqueness<br>3. Inversion hardness
+    Verifier-->>User: Verification result
+    
+    Note over AOW,Verifier: Properties:<br>• Ω(n) sequential steps required<br>• Pr[f^{(n)}(x)=f^{(m)}(x)] ≤ negl(λ)<br>• Preimage finding computationally infeasible

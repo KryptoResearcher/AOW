@@ -1,0 +1,32 @@
+flowchart TD
+    subgraph "Security Reduction"
+        direction TB
+        ADV[Adversary A<br>Breaks temporal binding]
+        RED[Reduction B<br>Uses A to solve AIIP]
+        AIIP[AIIP Challenge<br>f, n*, y*]
+        SOL[Solution to AIIP]
+        
+        AIIP --> RED
+        RED --> ADV
+        ADV --> RED
+        RED --> SOL
+    end
+
+    subgraph "Reduction Steps"
+        direction TB
+        RS1[Receive AIIP challenge f, n*, y*]
+        RS2[Simulate environment for A]
+        RS3[If A queries n* and f^{n*}(x_i) = y*<br>output x_i as solution]
+        RS4[If A forges with n*<br>output x* as solution]
+    end
+
+    RED --> RS1
+    RS1 --> RS2
+    RS2 --> RS3
+    RS3 --> RS4
+
+    classDef reduction fill:#f3e5f5
+    classDef steps fill:#e1f5fe
+    
+    class ADV,RED,AIIP,SOL reduction
+    class RS1,RS2,RS3,RS4 steps

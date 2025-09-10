@@ -1,0 +1,26 @@
+sequenceDiagram
+    participant C as Challenger
+    participant B as Reduction
+    participant A as Adversary
+
+    Note over C: AIIP Challenge: (f, n*, y*)
+    C->>B: Send AIIP challenge
+    
+    B->>A: Send function f
+    loop Adaptive Queries
+        A->>B: Query (x_i, n_i)
+        alt n_i = n* and f^{(n_i)}(x_i) = y*
+            B->>C: Output x_i as solution
+        else
+            B->>A: Respond with y_i = f^{(n_i)}(x_i)
+        end
+    end
+    
+    A->>B: Output forgery (x*, n*, y*)
+    alt n* = n* and f^{(n*)}(x*) = y*
+        B->>C: Output x* as solution
+    else
+        B->>C: Output ⊥ (failure)
+    end
+
+    Note right of B: Reduction succeeds if<br>Pr[Break] ≤ n_max · ε

@@ -1,0 +1,31 @@
+graph LR
+    subgraph "Temporal Event Chain"
+        direction LR
+        G[Genesis<br>τ₀]
+        E1[Event 1<br>e₁]
+        E2[Event 2<br>e₂]
+        E3[Event 3<br>e₃]
+        EN[Event N<br>eₙ]
+        
+        G-->|τ₁ = AOW(H(e₁‖τ₀))| E1
+        E1-->|τ₂ = AOW(H(e₂‖τ₁))| E2
+        E2-->|τ₃ = AOW(H(e₃‖τ₂))| E3
+        E3-.->|τₙ = AOW(H(eₙ‖τₙ₋₁))| EN
+    end
+
+    subgraph "Byzantine Resistance"
+        direction TB
+        BR[Byzantine Node]
+        BR-.->|Attempt to alter order| E2
+        E2-.->|Invalid hash| VALIDATION[Validation Failure]
+    end
+
+    classDef event fill:#bbdefb
+    classDef genesis fill:#c8e6c9
+    classDef attack fill:#ffcdd2
+    classDef validation fill:#fff9c4
+    
+    class G genesis
+    class E1,E2,E3,EN event
+    class BR attack
+    class VALIDATION validation

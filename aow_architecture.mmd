@@ -1,0 +1,47 @@
+graph TB
+    subgraph "CASH Framework"
+        direction TB
+        CEE[Confidentiality<br>Chaotic Entropic Expansion]
+        AOW[Reliability<br>Affine One-Wayness]
+        SH[Opposability<br>Semantic Holder]
+    end
+
+    subgraph "AOW Core Components"
+        direction TB
+        FF[Finite Field Arithmetic]
+        AIIP[Affine Iterated Inversion Problem]
+        POLY[Polynomial Iteration]
+    end
+
+    subgraph "Security Foundations"
+        direction TB
+        MQ[MQ Problem Hardness]
+        HCDLP[High-Genus HCDLP]
+    end
+
+    subgraph "Applications"
+        direction TB
+        BFT[Byzantine Fault Tolerance]
+        DS[Distributed Synchronization]
+        VDF[Verifiable Delay Functions]
+    end
+
+    CASH --> AOW
+    AOW --> AIIP
+    AIIP --> MQ
+    AIIP --> HCDLP
+    AOW --> FF
+    AOW --> POLY
+    AOW --> BFT
+    AOW --> DS
+    AOW --> VDF
+
+    classDef cash fill:#e1f5fe
+    classDef core fill:#f3e5f5
+    classDef security fill:#fff3e0
+    classDef apps fill:#e8f5e8
+    
+    class CEE,SH,AOW cash
+    class FF,AIIP,POLY core
+    class MQ,HCDLP security
+    class BFT,DS,VDF apps

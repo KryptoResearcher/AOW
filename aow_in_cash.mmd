@@ -1,0 +1,14 @@
+graph TB
+    subgraph "CASH Framework"
+        CEE[Confidentiality<br>Chaotic Entropic Expansion]
+        AOW[Reliability<br>Affine One-Wayness]
+        SH[Opposability<br>Semantic Holder]
+    end
+
+    AOW -.->|Temporal Binding| CEE
+    AOW -.->|Verifiable Computation| SH
+    CEE -.->|Entropy Sources| AOW
+    SH -.->|Legal Interpretation| AOW
+
+    classDef cash fill:#e1f5fe
+    class CEE,AOW,SH cash

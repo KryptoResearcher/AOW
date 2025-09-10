@@ -1,0 +1,24 @@
+graph LR
+    subgraph "Quantum Attack Vectors"
+        Q1[Grover's Algorithm]
+        Q2[Quantum Algebraic Attacks]
+        Q3[Quantum Cycle Finding]
+        Q4[HCDLP Quantum Attacks]
+    end
+
+    subgraph "AOW Defenses"
+        D1[Exponential degree growth<br>deg(f⁽ⁿ⁾) = 2ⁿ]
+        D2[High genus HCDLP<br>g = 2^{n-1}-1]
+        D3[Sequential requirement<br>Ω(n) steps]
+        D4[Field size q = 2^{2λ}]
+    end
+
+    Q1 --> D4
+    Q2 --> D1
+    Q3 --> D3
+    Q4 --> D2
+
+    classDef attack fill:#ffcdd2
+    classDef defense fill:#c8e6c9
+    class Q1,Q2,Q3,Q4 attack
+    class D1,D2,D3,D4 defense
