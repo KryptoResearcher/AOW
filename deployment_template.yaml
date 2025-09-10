@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aow-node
+  labels:
+    app: aow
+    component: temporal-verification
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aow
+  template:
+    metadata:
+      labels:
+        app: aow
+        component: temporal-verification
+    spec:
+      containers:
+      - name: aow-node
+        image: aow-node:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 9090
+          name: metrics
+        env:
+        - name: AOW_ENVIRONMENT
+          value: "production"
+        - name: AOW_SECURITY_LEVEL
+          value: "128"
+        - name: AOW_FIELD_SIZE
+          value: "21888242871839275222246405745257275088548364400416034343698204186575808495617"
+        - name: AOW_ALPHA
+          value: "5"
+        - name: AOW_ITERATIONS
+          value: "10000"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: data-volume
+          mountPath: /app/data
+      volumes:
+      - name: config-volume
+        configMap:
+          name: aow-config
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: aow-data-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aow-service
+spec:
+  selector:
+    app: aow
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aow-config
+data:
+  config.json: |
+    {
+      "environment": "production",
+      "logging": {
+        "level": "INFO",
+        "file": "/app/logs/aow.log"
+      },
+      "crypto": {
+        "security_level": 128,
+        "field_parameters": {
+          "size": 21888242871839275222246405745257275088548364400416034343698204186575808495617
+        },
+        "polynomial_parameters": {
+          "alpha": 5
+        },
+        "iteration_parameters": {
+          "default_iterations": 10000
+        }
+      }
+    }
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aow-data-pvc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

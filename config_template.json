@@ -1,0 +1,57 @@
+
+
+{
+  "$schema": "./config_schema.json",
+  "name": "aow_configuration",
+  "version": "1.0.0",
+  "description": "AOW configuration template",
+  "environment": "production",
+  "logging": {
+    "level": "INFO",
+    "file": "logs/aow.log",
+    "max_size": "10MB",
+    "backup_count": 5
+  },
+  "crypto": {
+    "security_level": 128,
+    "field_parameters": {
+      "size": 21888242871839275222246405745257275088548364400416034343698204186575808495617,
+      "type": "prime"
+    },
+    "polynomial_parameters": {
+      "alpha": 5,
+      "alpha_type": "quadratic_non_residue"
+    },
+    "iteration_parameters": {
+      "default_iterations": 10000,
+      "max_iterations": 1000000
+    }
+  },
+  "stark": {
+    "blowup_factor": 4,
+    "security_param": 128,
+    "fri_folding_factor": 2,
+    "num_queries": 40
+  },
+  "performance": {
+    "batch_size": 100,
+    "parallel_workers": 4,
+    "cache_size": 1000
+  },
+  "network": {
+    "port": 8080,
+    "host": "0.0.0.0",
+    "timeout": 30,
+    "max_connections": 100
+  },
+  "database": {
+    "type": "sqlite",
+    "path": "data/aow.db",
+    "backup_interval": "24h"
+  },
+  "monitoring": {
+    "enabled": true,
+    "port": 9090,
+    "metrics_interval": 60
+  }
+}
