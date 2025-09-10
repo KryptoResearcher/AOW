@@ -1,0 +1,27 @@
+
+{
+  "name": "aow_parameters_256bit",
+  "description": "AOW parameters for 256-bit security level",
+  "security_level": 256,
+  "field_size": 57896044618658097711785492504343953926634992332820282019728792003956564819949,
+  "field_type": "prime",
+  "alpha": 5,
+  "alpha_type": "quadratic_non_residue",
+  "max_iterations": 100000000,
+  "recommended_iterations": 1000000,
+  "stark_parameters": {
+    "blowup_factor": 8,
+    "security_param": 256,
+    "fri_folding_factor": 2,
+    "num_queries": 80
+  },
+  "performance_characteristics": {
+    "iteration_time_ms": 0.002,
+    "verification_time_ms": 12,
+    "proof_size_bytes": 200000
+  },
+  "compatibility": {
+    "min_version": "0.1.0",
+    "tested_versions": ["0.1.0", "0.2.0"]
+  }
+}

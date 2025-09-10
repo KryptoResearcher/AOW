@@ -1,0 +1,27 @@
+
+{
+  "name": "aow_parameters_128bit",
+  "description": "AOW parameters for 128-bit security level",
+  "security_level": 128,
+  "field_size": 21888242871839275222246405745257275088548364400416034343698204186575808495617,
+  "field_type": "prime",
+  "alpha": 5,
+  "alpha_type": "quadratic_non_residue",
+  "max_iterations": 1000000,
+  "recommended_iterations": 10000,
+  "stark_parameters": {
+    "blowup_factor": 4,
+    "security_param": 128,
+    "fri_folding_factor": 2,
+    "num_queries": 40
+  },
+  "performance_characteristics": {
+    "iteration_time_ms": 0.001,
+    "verification_time_ms": 5,
+    "proof_size_bytes": 100000
+  },
+  "compatibility": {
+    "min_version": "0.1.0",
+    "tested_versions": ["0.1.0", "0.2.0"]
+  }
+}

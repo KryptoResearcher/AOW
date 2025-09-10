@@ -1,0 +1,27 @@
+
+{
+  "name": "aow_parameters_192bit",
+  "description": "AOW parameters for 192-bit security level",
+  "security_level": 192,
+  "field_size": 39402006196394479212279040100143613805079739270465446667948293404245721771496870329047266088258938001861606973112319,
+  "field_type": "prime",
+  "alpha": 5,
+  "alpha_type": "quadratic_non_residue",
+  "max_iterations": 10000000,
+  "recommended_iterations": 100000,
+  "stark_parameters": {
+    "blowup_factor": 6,
+    "security_param": 192,
+    "fri_folding_factor": 2,
+    "num_queries": 60
+  },
+  "performance_characteristics": {
+    "iteration_time_ms": 0.0015,
+    "verification_time_ms": 8,
+    "proof_size_bytes": 150000
+  },
+  "compatibility": {
+    "min_version": "0.1.0",
+    "tested_versions": ["0.1.0", "0.2.0"]
+  }
+}

@@ -1,235 +1,89 @@
-# Affine One-Wayness (AOW) - Post-Quantum Temporal Verification
 
-![Python Version](https://img.shields.io/badge/python-3.8%2B-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Research](https://img.shields.io/badge/status-research--implementation-orange)
+assets/parameters/README.md
+markdown
 
-A reference implementation of **Affine One-Wayness (AOW)**, the reliability component of the broader **CASH framework** (Chaotic Affine Secure Hash). AOW provides transparent post-quantum temporal verification through polynomial iteration over finite fields, enabling Byzantine-resistant event ordering and distributed synchronization with provable security guarantees.
+# AOW Parameter Sets
 
-> **Research Implementation Notice**: This project is a theoretical construct and reference implementation intended for research validation. It is not yet audited or ready for production use.
+This directory contains pre-configured parameter sets for different security levels.
 
-## Table of Contents
+## Parameter Files
 
-- [Overview](#-overview)
-- [Key Features](#-key-features)
-- [Theoretical Foundations](#-theoretical-foundations)
-- [Repository Structure](#-repository-structure)
-- [Installation](#-installation)
-- [Quick Start](#-quick-start)
-- [Examples](#-examples)
-- [Benchmarking](#-benchmarking)
-- [Documentation](#-documentation)
-- [Contributing](#-contributing)
-- [License](#-license)
-- [Citation](#-citation)
+### params_128.json
+Parameters for 128-bit security level. Suitable for most applications with moderate security requirements.
 
-## Overview
+### params_192.json
+Parameters for 192-bit security level. Provides enhanced security for sensitive applications.
 
-The Affine One-Wayness (AOW) primitive addresses the challenge of verifiable temporal ordering in distributed systems without synchronized clocks or trusted authorities. AOW provides strong temporal binding guarantees by reducing its security to the hardness of the Affine Iterated Inversion Problem (AIIP), which possesses dual foundations in multivariate quadratic algebra and the arithmetic of high-genus hyperelliptic curves.
+### params_256.json
+Parameters for 256-bit security level. Maximum security for long-term protection and high-value applications.
 
-AOW serves as the reliability component of the CASH framework triad:
-- **Iron Layer (AOW)**: Temporal reliability and Byzantine resistance
-- **Gold Layer (CEE)**: Data confidentiality and entropy preservation  
-- **Clay Layer (SH)**: Legal opposability and verifiable interpretation
+## Parameter Descriptions
 
-## Key Features
+### Field Parameters
+- `field_size`: The size of the finite field (prime modulus)
+- `field_type`: Type of field (currently only "prime" supported)
+- `alpha`: Constant term in the polynomial f(x) = x² + α
+- `alpha_type`: Specifies that α is a quadratic non-residue
 
-- **Transparent Setup**: No trusted authorities or hidden parameters required
-- **Post-Quantum Security**: Security reductions to AIIP hardness with quantum resistance
-- **Efficient Verification**: Native integration with STARK proof systems with O(λ log n) verification complexity
-- **Temporal Binding**: Provable sequential computation requirements with depth uniqueness
-- **Byzantine Resistance**: Robust event ordering resistant to malicious participants
-- **Zero-Knowledge Proofs**: Support for privacy-preserving verification of temporal claims
+### Iteration Parameters
+- `max_iterations`: Maximum allowed iterations for security reasons
+- `recommended_iterations`: Recommended iteration count for typical use
 
-## Theoretical Foundations
+### STARK Parameters
+- `blowup_factor`: Blowup factor for STARK proof system
+- `security_param`: Security parameter for STARK proofs
+- `fri_folding_factor`: FRI folding factor
+- `num_queries`: Number of query points for proof verification
 
-AOW is built upon the **Affine Iterated Inversion Problem (AIIP)** with security reductions to:
-1. Multivariate Quadratic (MQ) problem hardness
-2. High-genus Hyperelliptic Curve Discrete Logarithm Problem (HCDLP)
+### Performance Characteristics
+Estimated performance metrics for planning purposes:
+- `iteration_time_ms`: Average time per iteration in milliseconds
+- `verification_time_ms`: Average verification time in milliseconds
+- `proof_size_bytes`: Estimated proof size in bytes
 
-The primitive maintains three core temporal verification properties:
-1. **Sequential Evaluation**: Ω(n) sequential steps required for evaluation
-2. **Depth Uniqueness**: Negligible probability of output collisions at different depths
-3. **Inversion Hardness**: Computational infeasibility of finding preimages
+## Usage
 
-Formally, for security parameter λ, field size q = 2²λ, and maximum depth n_max = 2^{λ/2}:
-Pr[Adversary wins temporal forgery game] ≤ negl(λ)
+To use these parameters in your code:
 
-## Repository Structure
-
-affine-one-wayness/
-├── src/                          # Source code
-│   ├── core/                     # Cryptographic operations (AIIP, finite fields)
-│   ├── temporal/                 # Temporal binding and verification
-│   ├── proofs/                   # STARK proof integration
-│   ├── types.py                  # Core data structures
-│   └── utils.py                  # Helper functions
-├── tests/                        # Comprehensive test suite
-│   ├── unit/                     # Unit tests for components
-│   ├── property/                 # Property-based tests
-│   ├── integration/              # Integration tests
-│   └── conftest.py               # Test configuration
-├── examples/                     # Practical usage examples
-│   ├── basic_iteration.py        # Basic AIIP iteration
-│   ├── event_ordering.py         # Byzantine-resistant event ordering
-│   ├── stark_proofs.py           # STARK proof generation and verification
-│   └── data/                     # Example datasets
-├── benchmarks/                   # Performance benchmarking
-│   ├── scripts/                  # Benchmarking scripts
-│   ├── configurations/           # Parameter configurations
-│   ├── results/                  # Benchmark results
-│   └── analysis/                 # Result analysis & visualization
-├── docs/                         # Comprehensive documentation
-│   ├── theory/                   # Theoretical explanations
-│   ├── user-guide/               # Usage instructions
-│   ├── api-reference/            # API documentation
-│   └── tutorials/                # Step-by-step tutorials
-├── assets/                       # Resources & templates
-│   ├── images/                   # Diagrams & visualizations
-│   ├── parameters/               # Parameter sets
-│   └── templates/                # Configuration templates
-└── README.md                     # This file
-
-
-## Installation
-
-# Clone the repository
-git clone https://github.com/KryptoResearcher/AOW.git
-cd AOW
-
-# Install in development mode
-pip install -e .
-
-# Install benchmarking dependencies (optional)
-pip install -r benchmarks/requirements.txt
-
-
-## Quick Start
-
-
+```python
+import json
 from src.core.fields import FiniteField
-from src.core.aiip import iterate_polynomial
-from src.temporal.verification import verify_temporal_binding
-from src.types import AOWParameters
 
-# Initialize parameters
-params = AOWParameters(
-    field_size=2**256,   # Field size for 128-bit security
-    alpha=5,             # Quadratic non-residue
-    iterations=1000,     # Number of iterations
-    security_param=128   # Security level
-)
+# Load parameters
+with open('assets/parameters/params_128.json', 'r') as f:
+    params = json.load(f)
 
-# Compute AOW function
-field = FiniteField(params.field_size)
-result = iterate_polynomial(123456, params.alpha, params.iterations, field)
+# Create field
+field = FiniteField(params['field_size'])
 
-# Verify temporal binding properties
-is_valid = verify_temporal_binding(result, params)
-print(f"Temporal binding verified: {is_valid}")
+# Use parameters
+alpha = params['alpha']
+iterations = params['recommended_iterations']
 
+Customization
 
-Run the basic example:
+You can create custom parameter sets by modifying these files. Ensure that:
 
-python examples/basic_iteration.py
+    The field size provides adequate security for your needs
 
+    α is a quadratic non-residue in the chosen field
 
-## Examples
+    Iteration counts are within reasonable limits for your application
 
-The repository includes several practical examples:
+Security Notes
 
-1. **Basic Iteration** (`examples/basic_iteration.py`):
-   - Demonstrates core AIIP polynomial iteration
+    These parameters are provided as examples and should be validated for your specific use case
 
-2. **Event Ordering** (`examples/event_ordering.py`):
-   - Shows Byzantine-resistant temporal event chain construction
+    Always use cryptographically secure random number generation
 
-3. **STARK Proofs** (`examples/stark_proofs.py`):
-   - Demonstrates STARK proof generation and verification for AOW computations
+    Regularly update parameters as computational capabilities improve
 
-4. **Distributed Synchronization** (`examples/distributed_sync.py`):
-   - Example of using AOW for distributed system synchronization
+Performance Testing
 
-## Benchmarking
+Use the benchmarking tools to test performance with these parameters:
+bash
 
-The benchmarking suite allows performance assessment across different parameter configurations:
+python benchmarks/scripts/benchmark_aiip.py \
+  -c assets/parameters/params_128.json \
+  -o benchmarks/results/aiip_128.json
 
-
-# Run AOW performance benchmarks
-python benchmarks/scripts/benchmark_aow.py \
-  -c benchmarks/configurations/standard_params.json \
-  -o benchmarks/results/current/aow_performance.csv
-
-# Generate performance visualization
-python benchmarks/analysis/plot_performance.py \
-  -i benchmarks/results/current/aow_performance.csv \
-  -o benchmarks/results/current/aow_performance.png \
-  -t time
-
-# Generate comprehensive report
-python benchmarks/analysis/generate_report.py \
-  -c benchmarks/configurations/standard_params.json \
-  -i benchmarks/results/current/aow_performance.csv \
-  -o benchmarks/results/current/report.md
-
-Pre-configured parameter sets are available for:
-- Development testing (`small_params.json`)
-- Realistic assessment (`standard_params.json`) 
-- Theoretical validation (`theoretical_params.json`)
-
-## Documentation
-
-Comprehensive documentation is available in the `/docs` directory:
-
-- **Theory Guides**: Mathematical foundations and theoretical framework
-- **User Guides**: Practical usage instructions and parameter configuration
-- **API Reference**: Technical API documentation
-- **Tutorials**: Step-by-step walkthroughs of examples
-
-Key documentation files:
-- [Theory Overview](/docs/theory/overview.md)
-- [Installation Guide](/docs/user-guide/installation.md) 
-- [Quick Start Guide](/docs/user-guide/quickstart.md)
-- [Parameter Configuration](/docs/user-guide/parameters.md)
-
-## Contributing
-
-As a research implementation, we welcome contributions from the academic community:
-
-1. **Explore the Theory**: Read the accompanying paper and documentation
-2. **Experiment with Code**: Run examples and explore the implementation
-3. **Identify Issues**: Report bugs or theoretical concerns via GitHub Issues
-4. **Suggest Enhancements**: Propose improvements to algorithms or documentation
-5. **Submit Pull Requests**: Contribute code improvements or additional examples
-
-Please see our [Contributing Guidelines](docs/contributing.md) and [Research Statement](docs/research.md) for more details.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Citation
-
-If you use this implementation in academic work, please cite the accompanying paper:
-
-@article{aow2025,
-  title={The Affine One-Wayness (AOW): A Transparent Post-Quantum Temporal Verification via Polynomial Iteration},
-  author={anonymised for doubleblind review},
-  journal={anonymised for doubleblind review},
-  year={2025},
-  publisher={anonymised for doubleblind review}
-}
-
-## Roadmap
-
-Future work includes:
-
-1. **Performance Optimization**: Migration of performance-critical components to Rust
-2. **STARK Integration**: Full integration with a production-grade STARK prover
-3. **Additional Polynomial Families**: Support for broader polynomial families beyond quadratic maps
-4. **Formal Verification**: Application of formal methods to verify implementation correctness
-5. **Community Engagement**: Collaboration with distributed systems and cryptographic research communities
-
----
-
-For questions and discussions, please open an issue on GitHub or contact the research team at krytoresearcher@proton.me.
