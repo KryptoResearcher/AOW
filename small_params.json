@@ -1,0 +1,8 @@
+{
+  "field_size": 1000003,
+  "alpha": 5,
+  "iterations": 100,
+  "max_iterations": 1000,
+  "num_events": 10,
+  "security_level": 80
+}
